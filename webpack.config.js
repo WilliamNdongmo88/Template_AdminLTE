@@ -69,7 +69,42 @@ Encore
     //.enableIntegrityHashes(Encore.isProduction())
 
     // uncomment if you're having problems with a jQuery plugin
-    //.autoProvidejQuery()
+    .autoProvidejQuery({
+        $:'jquery',
+        jQuery: 'jquery',
+        'window.jQuery':'jquery',
+    })
+
+    .configureImageRule({
+        // tell Webpack it should consider inlining
+        type: 'asset',
+        //maxSize: 4 * 1024, // 4 kb - the default is 8kb
+    })
+
+    .configureFontRule({
+        type: 'asset',
+        //maxSize: 4 * 1024
+    })
+
+    module.exports = {
+        module: {
+         rules: [
+            {
+              test: /\.(png|jpg|gif)$/i,
+              use: [
+                {
+                  loader: 'url-loader',
+                  options: {
+                    limit: 8192,
+                  }
+                },
+              ],
+             type: 'javascript/auto'
+            },
+         ]
+        },
+      }
+
 ;
 
 module.exports = Encore.getWebpackConfig();
